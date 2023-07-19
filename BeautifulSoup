@@ -1,0 +1,27 @@
+import requests
+from bs4 import BeautifulSoup
+
+# Function to fetch the HTML content of a web page
+def get_html(url):
+    response = requests.get("https://timesofindia.indiatimes.com/")
+    return response.content
+
+# Function to filter ads using Beautiful Soup
+def filter_ads(html):
+    soup = BeautifulSoup(html, 'html.parser')
+
+    # Identify and remove specific HTML elements related to ads
+    ad_elements = soup.select('.ad-class')  # Replace 'ad-class' with the class name or identifier of ad-related elements
+
+    for ad_element in ad_elements:
+        ad_element.decompose()
+
+    # Return the filtered HTML content
+    return str(soup)
+
+# Example usage
+url = "https://timesofindia.indiatimes.com/"  # Replace with the URL of the web page you want to scrape
+html = get_html(url)
+filtered_html = filter_ads(html)
+
+print(filtered_html)
